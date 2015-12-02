@@ -1,0 +1,17 @@
+#map { 
+    height: 600px; 
+    width: 800px;
+}
+
+.content {
+    padding: 10px;
+}
+
+.params {
+    padding: 10px;
+}
+
+.params label {
+    padding-top: 5px;
+    display: block;
+}
