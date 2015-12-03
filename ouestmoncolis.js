@@ -14,8 +14,16 @@ function showData() {
 
         // Get data from the remote service
         var jqxhr = $.ajax({url: "https://sales04-ssg.dev.ca.com:9443/suivi/" + idcolis})
-            .done(function() {
-                alert("Cool, ça marche !");
+            .success(function(result) {
+
+                var targetSite = L.marker([result["Fields"]["records"][0]["fields"]["longlat"][0], result["Fields"]["records"][0]["fields"]["longlat"][1]]).addTo(map);                
+                var currentPosition = L.marker([result["Statut"]["positionCamion"]["lat"], result["Statut"]["positionCamion"]["lng"]]).addTo(map);
+
+                targetSite.bindPopup("<b>Site de livraison</b>: " + result["Fields"]["records"][0]["fields"]["libelle_du_site"] + "<br /><b>Adresse</b>: " + result["Fields"]["records"][0]["fields"]["adresse"] + ", " +  result["Fields"]["records"][0]["fields"]["localite"] + "</center>");
+                currentPosition.bindPopup("<b>Type de livraison</b>: " + result["Statut"]["base_label"] + "<br /><b>Dernière mise à jour</b>: " + result["Statut"]["date"])
+
+                var group = new L.featureGroup([targetSite, currentPosition]);
+                map.fitBounds(group.getBounds());
             })
             .fail(function() {
                 alert("Service injoignable !")
