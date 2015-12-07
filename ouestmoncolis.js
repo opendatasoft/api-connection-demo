@@ -9,9 +9,18 @@ L.tileLayer('http://d.tiles.mapbox.com/v4/opendatasoft.gb69acb2/{z}/{x}/{y}.png?
 var truckIcon = L.divIcon({html: '<div class="map-icon truck-icon"><i class="fa fa-truck"></div>'});
 var postOfficeIcon = L.divIcon({html: '<div class="map-icon postoffice-icon"><i class="fa fa-envelope"></div>'});
 
+var targetSite, currentPosition;
+
 function showData() {
     // Get the identifier
     var idcolis = $("#idcolis").val();
+
+    if (targetSite) {
+        map.removeLayer(targetSite);
+    }
+    if (currentPosition) {
+        map.removeLayer(currentPosition);
+    }
 
     if (idcolis) {
 
@@ -19,8 +28,8 @@ function showData() {
         var jqxhr = $.ajax({url: "https://sales04-ssg.dev.ca.com:9443/suivi/" + idcolis})
             .success(function(result) {
 
-                var targetSite = L.marker([result["Fields"]["records"][0]["fields"]["longlat"][0], result["Fields"]["records"][0]["fields"]["longlat"][1]], {icon: postOfficeIcon}).addTo(map);
-                var currentPosition = L.marker([result["Statut"]["positionCamion"]["lat"], result["Statut"]["positionCamion"]["lng"]], {icon: truckIcon}).addTo(map);
+                targetSite = L.marker([result["Fields"]["records"][0]["fields"]["longlat"][0], result["Fields"]["records"][0]["fields"]["longlat"][1]], {icon: postOfficeIcon}).addTo(map);
+                currentPosition = L.marker([result["Statut"]["positionCamion"]["lat"], result["Statut"]["positionCamion"]["lng"]], {icon: truckIcon}).addTo(map);
 
                 targetSite.bindPopup("<b>Site de livraison</b>: " + result["Fields"]["records"][0]["fields"]["libelle_du_site"] + "<br /><b>Adresse</b>: " + result["Fields"]["records"][0]["fields"]["adresse"] + ", " +  result["Fields"]["records"][0]["fields"]["localite"] + "</center>");
                 currentPosition.bindPopup("<b>Type de livraison</b>: " + result["Statut"]["base_label"] + "<br /><b>Dernière mise à jour</b>: " + result["Statut"]["date"])
