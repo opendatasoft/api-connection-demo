@@ -67,3 +67,22 @@ body {
     height: 140px;
     margin: 20px;
 }
+/* Map icons */
+.map-icon {
+    height: 32px;
+    width: 32px;
+    margin-left: -16px;
+    margin-top: -16px;
+    border: solid 2px black;
+    border-radius: 20px;
+}
+.truck-icon {
+    background-color: #88C8FF;
+}
+.postoffice-icon {
+    background-color: #FFFF85;
+}
+.map-icon i {
+    line-height: 28px;
+    font-size: 18px;
+}
